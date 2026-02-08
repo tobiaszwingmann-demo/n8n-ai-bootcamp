@@ -1,0 +1,8 @@
+Prio: Urgent
+
+Name: Tobias
+
+Submitted: 2025-11-03T10:06:12.159+01:00
+
+Description:
+Laptop was dropped and is broken; needs urgent assessment and next steps for repair or replacement. Ticket ID: TKT-20251103-001

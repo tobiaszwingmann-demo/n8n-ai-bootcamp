@@ -1,0 +1,8 @@
+Prio: Urgent
+
+Name: Tobias
+
+Submitted: 2025-11-03T09:59:24.380+01:00
+
+Description:
+User cannot log in and requests a human IT agent to assist with Windows/Microsoft 365 login issues (potential MFA/VPN problems).

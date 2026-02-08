@@ -1,0 +1,6 @@
+input,user,expected_output
+"The entire company network is down and no one can access email or internal tools.","Test","Urgent"
+"My laptop won’t turn on and I need it to finish a client presentation today.","Test","Urgent"
+"I forgot my password and need help resetting it.","Test","Not urgent"
+"The VPN is very slow this morning but I can still work.","Test","Not urgent"
+"We suspect a security breach after noticing unusual login activity across multiple accounts.","Test","Urgent"

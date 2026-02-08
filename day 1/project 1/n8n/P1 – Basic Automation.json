@@ -32,9 +32,9 @@
         0,
         0
       ],
-      "id": "35350971-4381-4390-82a9-379b477effbd",
+      "id": "7b40ffa9-57e2-4c0f-8975-017c326d92a3",
       "name": "On form submission",
-      "webhookId": "6372ff23-24e4-43cd-8db9-4de150c9a7d5"
+      "webhookId": "c997eafa-9f30-4468-a1ce-a57a597e9659"
     },
     {
       "parameters": {
@@ -53,46 +53,45 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        208,
+        224,
         0
       ],
-      "id": "9c147b59-9038-41d2-b8d8-d3f701c8ab78",
+      "id": "65843252-c0fe-4ea6-a0a6-bf5816c920b3",
       "name": "Edit Fields"
     },
     {
       "parameters": {
-        "authentication": "oAuth2",
         "resource": "file",
         "owner": {
           "__rl": true,
-          "value": "tobiaszwingmann",
+          "value": "tobiaszwingmann-demo",
           "mode": "list",
-          "cachedResultName": "tobiaszwingmann",
-          "cachedResultUrl": "https://github.com/tobiaszwingmann"
+          "cachedResultName": "tobiaszwingmann-demo",
+          "cachedResultUrl": "https://github.com/tobiaszwingmann-demo"
         },
         "repository": {
           "__rl": true,
-          "value": "demo-building-ai-workflows-and-agents-with-n8n",
+          "value": "n8n-ai-bootcamp",
           "mode": "list",
-          "cachedResultName": "demo-building-ai-workflows-and-agents-with-n8n",
-          "cachedResultUrl": "https://github.com/tobiaszwingmann/demo-building-ai-workflows-and-agents-with-n8n"
+          "cachedResultName": "n8n-ai-bootcamp",
+          "cachedResultUrl": "https://github.com/tobiaszwingmann-demo/n8n-ai-bootcamp"
         },
-        "filePath": "=project 1/tickets/{{ $json.ID }}.txt",
+        "filePath": "=day 1/project 1/tickets/{{ $json.ID }}.txt",
         "fileContent": "=Name: {{ $('On form submission').item.json['Your Name'] }}\n\nSubmitted: {{ $('On form submission').item.json.submittedAt }}\n\nDescription:\n{{ $('On form submission').item.json['Issue description'] }}",
         "commitMessage": "new ticket"
       },
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        416,
+        448,
         0
       ],
-      "id": "7dd017c3-4394-4e02-83b4-1ec95c10336b",
+      "id": "e728df4d-02e8-468e-931a-8b8e01054a16",
       "name": "Create a file",
       "webhookId": "6b0de6a2-6f40-4566-b4c8-dc1699f32f26",
       "credentials": {
-        "githubOAuth2Api": {
-          "id": "rqkMAdMVwbOGDQB4",
+        "githubApi": {
+          "id": "dcwZECd0FxhzyJj3",
           "name": "GitHub account"
         }
       }
@@ -125,20 +124,22 @@
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
   },
-  "versionId": "d1148ab2-8e34-48e9-b8ce-c3310eadc2d3",
+  "versionId": "d214019b-630c-43e7-b524-5d2d47c8456e",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "94e1edcc34a91a151fc2ec1b99597068a304e37fdb946fc806f00f97776fce3a"
+    "instanceId": "26bf8eec37d4d0a7ee8a9b62eaf593a40b0ce784017882c7b978518d626df3a8"
   },
-  "id": "r2vA5F0EFuAIgzuR",
+  "id": "Va9WweCUQwClPVKxv_hF_",
   "tags": [
     {
-      "createdAt": "2025-11-01T20:01:49.551Z",
-      "updatedAt": "2025-11-01T20:01:49.551Z",
-      "id": "t5Xu6If84iT9d4bw",
-      "name": "O'Reilly n8n"
+      "name": "O'Reilly n8n",
+      "id": "1TjIuZa5ju0lNrOc",
+      "updatedAt": "2026-02-08T20:46:07.403Z",
+      "createdAt": "2026-02-08T20:46:07.403Z"
     }
   ]
 }

@@ -1,0 +1,377 @@
+{
+  "name": "P4 – Simple Eval",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "IT Service Request",
+        "formDescription": "Submit your issue here",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Issue description",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Your Name",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "respondWithOptions": {
+            "values": {
+              "formSubmittedText": "IT support will be in touch shortly!"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -80,
+        -64
+      ],
+      "id": "6a5188c9-6fba-4d4a-aaed-d7d2e96cd7d9",
+      "name": "On form submission",
+      "webhookId": "760aaa2c-129e-4563-90ea-796e8b2b78c1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "267dcef0-9799-47ff-b11a-dca92d81f83b",
+              "name": "ID",
+              "value": "={{ $json.submittedAt.toDateTime().ts.toString(36).toUpperCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "7cf33f53-e083-4928-a701-691dc7c2c45a",
+              "name": "input",
+              "value": "={{ $json['Issue description'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        144,
+        -64
+      ],
+      "id": "a710caa5-65b3-42dc-9efe-f2b46828e639",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Issue:\n\n```\n{{ $json.input }}\n```",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=### **Role**\n\nYou are a text classification system for an IT support helpdesk.\nYour task is to read an incoming support ticket and classify it as either **\"Urgent\"** or **\"Not urgent\"** based on the content.\n\n### Classification Rules:\n\n* **Urgent** if the ticket describes:\n\n  * Complete system or network outages.\n  * Inability to perform critical work tasks.\n  * Security breaches or data loss.\n  * Hardware failure affecting essential operations.\n  * Issues impacting multiple users or key business functions.\n  * Time-sensitive problems needing immediate attention.\n\n* **Not urgent** if the ticket describes:\n\n  * Minor bugs or usability issues.\n  * Requests for information, training, or feature changes.\n  * Scheduled maintenance or non-critical updates.\n  * Problems with available workarounds.\n  * Single-user issues not blocking essential tasks.\n\n### Output Format:\n\nRespond **only** with one of the following labels:\n\n* `Urgent`\n* `Not urgent`\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        512,
+        0
+      ],
+      "id": "7c2c55f1-47ca-4e56-9c4d-ceb55979f57d",
+      "name": "Basic LLM Chain",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        464,
+        224
+      ],
+      "id": "11bd4a83-8f25-4194-a761-4ee070959c84",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DccUcMMK12JiKk1S",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"prio\": \"Urgent\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        224
+      ],
+      "id": "f8d3db6f-9893-42da-bd5a-308c285a5b6e",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "tobiaszwingmann-demo",
+          "mode": "list",
+          "cachedResultName": "tobiaszwingmann-demo",
+          "cachedResultUrl": "https://github.com/tobiaszwingmann-demo"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8n-ai-bootcamp",
+          "mode": "list",
+          "cachedResultName": "n8n-ai-bootcamp",
+          "cachedResultUrl": "https://github.com/tobiaszwingmann-demo/n8n-ai-bootcamp"
+        },
+        "filePath": "=day 1/project 4/tickets/{{ $('Edit Fields').item.json.ID }}.txt",
+        "fileContent": "=Prio: {{ $('Basic LLM Chain').item.json.output.prio }}\n\nName: {{ $('On form submission').item.json['Your Name'] }}\n\nSubmitted: {{ $('On form submission').item.json.submittedAt }}\n\nDescription:\n{{ $('On form submission').item.json['Issue description'] }}",
+        "commitMessage": "new ticket"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        1136,
+        144
+      ],
+      "id": "909f1d7f-d79a-4ad8-b704-6387e971efca",
+      "name": "Create a file",
+      "webhookId": "4ba68e77-2fc2-42a6-bbe6-e7a0150f0742",
+      "credentials": {
+        "githubApi": {
+          "id": "dcwZECd0FxhzyJj3",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "zfmhaNtpkaQhYYQ2",
+          "mode": "list",
+          "cachedResultName": "Evals",
+          "cachedResultUrl": "/projects/b4TIavkLO11Dt6dN/datatables/zfmhaNtpkaQhYYQ2"
+        }
+      },
+      "type": "n8n-nodes-base.evaluationTrigger",
+      "typeVersion": 4.7,
+      "position": [
+        144,
+        144
+      ],
+      "id": "5736cf8d-4a5a-45a6-8984-671632010255",
+      "name": "When fetching a dataset row"
+    },
+    {
+      "parameters": {
+        "operation": "checkIfEvaluating"
+      },
+      "type": "n8n-nodes-base.evaluation",
+      "typeVersion": 4.8,
+      "position": [
+        848,
+        0
+      ],
+      "id": "b3008802-7dda-494a-83ca-f9ff5471d646",
+      "name": "Evaluation"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "zfmhaNtpkaQhYYQ2",
+          "mode": "list",
+          "cachedResultName": "Evals",
+          "cachedResultUrl": "/projects/b4TIavkLO11Dt6dN/datatables/zfmhaNtpkaQhYYQ2"
+        },
+        "outputs": {
+          "values": [
+            {
+              "outputName": "output",
+              "outputValue": "={{ $('Basic LLM Chain').item.json.output.prio }}"
+            },
+            {
+              "outputName": "metric",
+              "outputValue": "={{ $json.Categorization }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.evaluation",
+      "typeVersion": 4.8,
+      "position": [
+        1360,
+        -64
+      ],
+      "id": "22f15a3d-2a1b-4530-8ed4-7dc503d6e36b",
+      "name": "Add Output"
+    },
+    {
+      "parameters": {
+        "operation": "setMetrics",
+        "metric": "categorization",
+        "expectedAnswer": "={{ $('When fetching a dataset row').item.json.expected_output }}",
+        "actualAnswer": "={{ $json.output.prio }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.evaluation",
+      "typeVersion": 4.8,
+      "position": [
+        1136,
+        -64
+      ],
+      "id": "5c45b463-25c6-477c-a857-7a9cfa8d5417",
+      "name": "Evaluation1"
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "Issue description": "I can't log into my account",
+          "Your Name": "Sabrina",
+          "submittedAt": "2025-11-01T21:08:53.050+01:00",
+          "formMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Evaluation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When fetching a dataset row": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluation": {
+      "main": [
+        [
+          {
+            "node": "Evaluation1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Output": {
+      "main": [
+        []
+      ]
+    },
+    "Evaluation1": {
+      "main": [
+        [
+          {
+            "node": "Add Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "42a0cc1f-9cfc-402f-b07c-0b904a42f0eb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "26bf8eec37d4d0a7ee8a9b62eaf593a40b0ce784017882c7b978518d626df3a8"
+  },
+  "id": "pd9dpouTcbkNGj4F",
+  "tags": [
+    {
+      "updatedAt": "2026-02-08T20:46:07.403Z",
+      "createdAt": "2026-02-08T20:46:07.403Z",
+      "id": "1TjIuZa5ju0lNrOc",
+      "name": "O'Reilly n8n"
+    }
+  ]
+}

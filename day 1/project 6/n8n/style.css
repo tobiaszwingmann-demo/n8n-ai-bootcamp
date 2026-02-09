@@ -1,0 +1,255 @@
+:root {
+  /* =========================
+     Light theme (clean white/grey accent)
+     ========================= */
+
+  /* Colors */
+  --chat--color--primary: #2563eb;              /* blue accent */
+  --chat--color--primary-shade-50: #1d4ed8;
+  --chat--color--primary--shade-100: #1e40af;
+
+  --chat--color--secondary: #111827;            /* main text / user bubble */
+  --chat--color-secondary-shade-50: #0b1220;
+
+  --chat--color-white: #ffffff;
+  --chat--color-light: #f7f7f8;
+  --chat--color-light-shade-50: #e5e7eb;        /* borders */
+  --chat--color-light-shade-100: #d1d5db;
+
+  --chat--color-medium: #eef0f2;
+  --chat--color-dark: #0b0f19;
+
+  --chat--color-disabled: #cbd5e1;
+  --chat--color-typing: #6b7280;
+
+  /* Base Layout */
+  --chat--spacing: 1rem;
+  --chat--border-radius: 14px;
+  --chat--transition-duration: 0.18s;
+
+  /* Modern font */
+  --chat--font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* Window Dimensions */
+  --chat--window--width: 420px;
+  --chat--window--height: 640px;
+  --chat--window--bottom: 16px;
+  --chat--window--right: 16px;
+  --chat--window--z-index: 9999;
+
+  --chat--window--border: 1px solid rgba(0,0,0,0.08);
+  --chat--window--border-radius: 16px;
+  --chat--window--margin-bottom: var(--chat--spacing);
+
+  /* Header Styles (minimal) */
+  --chat--header-height: auto;
+  --chat--header--padding: 14px 16px;
+  --chat--header--background: var(--chat--color-white);
+  --chat--header--color: #111827;
+
+  --chat--header--border-top: none;
+  --chat--header--border-left: none;
+  --chat--header--border-right: none;
+  --chat--header--border-bottom: 1px solid rgba(0,0,0,0.08);
+
+  --chat--heading--font-size: 1rem;
+  --chat--subtitle--font-size: 0.875rem;
+  --chat--subtitle--line-height: 1.35;
+
+  /* Message Styles */
+  --chat--message--font-size: 0.95rem;
+  --chat--message--padding: 12px 14px;
+  --chat--message--border-radius: 14px;
+  --chat--message-line-height: 1.6;
+  --chat--message--margin-bottom: 12px;
+
+  /* Bot messages should be "bubble-less" (we enforce in class overrides too) */
+  --chat--message--bot--background: transparent;
+  --chat--message--bot--color: #111827;
+  --chat--message--bot--border: none;
+
+  /* User bubble */
+  --chat--message--user--background: #111827;
+  --chat--message--user--color: #ffffff;
+  --chat--message--user--border: none;
+
+  --chat--message--pre--background: #f3f4f6;
+  --chat--messages-list--padding: 16px;
+
+  /* Toggle Button */
+  --chat--toggle--size: 56px;
+  --chat--toggle--width: var(--chat--toggle--size);
+  --chat--toggle--height: var(--chat--toggle--size);
+  --chat--toggle--border-radius: 50%;
+
+  --chat--toggle--background: #111827;
+  --chat--toggle--hover--background: #0b1220;
+  --chat--toggle--active--background: #000000;
+  --chat--toggle--color: #ffffff;
+
+  /* Input Area */
+  --chat--textarea--height: 52px;
+  --chat--textarea--max-height: 30rem;
+
+  --chat--input--font-size: 0.95rem;
+  --chat--input--padding: 12px 14px;
+  --chat--input--background: #ffffff;
+  --chat--input--text-color: #111827;
+  --chat--input--line-height: 1.5;
+  --chat--input--placeholder--font-size: 0.95rem;
+
+  --chat--input--border: 1px solid rgba(0,0,0,0.12);
+  --chat--input--border-radius: 999px;              /* pill */
+  --chat--input--border-active: 1px solid rgba(37,99,235,0.55);
+
+  --chat--input--left--panel--width: 2.25rem;
+
+  /* Button Styles */
+  --chat--button--padding: 10px 14px;
+  --chat--button--border-radius: 999px;
+  --chat--button--font-size: 0.95rem;
+  --chat--button--line-height: 1;
+
+  --chat--button--color--primary: #ffffff;
+  --chat--button--background--primary: #111827;
+  --chat--button--border--primary: none;
+  --chat--button--color--primary--hover: #ffffff;
+  --chat--button--background--primary--hover: #0b1220;
+  --chat--button--color--primary--disabled: #ffffff;
+  --chat--button--background--primary--disabled: #94a3b8;
+  --chat--button--border--primary--disabled: none;
+
+  --chat--button--color--secondary: #111827;
+  --chat--button--background--secondary: #f3f4f6;
+  --chat--button--border--secondary: 1px solid rgba(0,0,0,0.08);
+  --chat--button--color--secondary--hover: #111827;
+  --chat--button--background--secondary--hover: #e5e7eb;
+  --chat--button--border--secondary--hover: 1px solid rgba(0,0,0,0.10);
+  --chat--button--color--secondary--disabled: #6b7280;
+  --chat--button--background--secondary--disabled: #e5e7eb;
+  --chat--button--border--secondary--disabled: none;
+
+  --chat--close--button--color-hover: #111827;
+
+  /* Send and File Buttons */
+  --chat--input--send--button--background: transparent;
+  --chat--input--send--button--color: #111827;
+  --chat--input--send--button--background-hover: transparent;
+  --chat--input--send--button--color-hover: var(--chat--color--primary);
+
+  --chat--input--file--button--background: transparent;
+  --chat--input--file--button--color: #6b7280;
+  --chat--input--file--button--background-hover: transparent;
+  --chat--input--file--button--color-hover: #111827;
+
+  --chat--files-spacing: 0.25rem;
+
+  /* Body and Footer */
+  --chat--body--background: var(--chat--color-light);
+  --chat--footer--background: var(--chat--color-light);
+  --chat--footer--color: #111827;
+}
+
+/* =========================
+   Window / container polish
+   (class names vary by n8n embed; these are safe "best guesses")
+   ========================= */
+
+.chat-window,
+.chat-container,
+.chat-widget {
+  background: var(--chat--color-light);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.18);
+}
+
+/* =========================
+   ChatGPT-like message layout
+   - user: narrow bubble
+   - bot: no visible bubble, wider text
+   ========================= */
+
+.chat-message {
+  margin-bottom: 14px;
+}
+
+/* USER: narrow bubble, right aligned */
+.chat-message.user {
+  max-width: 60%;
+  margin-left: auto;
+
+  padding: 10px 14px;
+  background: #111827;
+  color: #ffffff;
+
+  border-radius: 14px;
+  border-bottom-right-radius: 8px;
+}
+
+/* BOT: no bubble, left aligned, wide */
+.chat-message.bot {
+  max-width: 92%;
+  margin-right: auto;
+
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  padding: 0 !important; /* bubble-less */
+  color: #111827;
+  border-radius: 0 !important;
+}
+
+/* Give assistant content comfortable vertical rhythm */
+.chat-message.bot p {
+  margin: 0 0 0.75em 0;
+}
+
+/* Lists */
+.chat-message.bot ul,
+.chat-message.bot ol {
+  padding-left: 1.25rem;
+  margin: 0.5rem 0 1rem;
+}
+
+/* Code blocks */
+.chat-message.bot pre {
+  background: #f3f4f6;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 0.75rem 0;
+  overflow: auto;
+}
+
+/* Inline code */
+.chat-message.bot code {
+  background: #f1f5f9;
+  padding: 0.15em 0.35em;
+  border-radius: 6px;
+}
+
+/* If bot messages have an inner wrapper, keep it from re-adding bubble padding */
+.chat-message.bot > *,
+.chat-message.bot .content,
+.chat-message.bot .message-content {
+  padding: 6px 0;
+}
+
+/* =========================
+   Footer / composer (input area)
+   ========================= */
+
+.chat-footer,
+.chat-input-container,
+.chat-composer {
+  padding: 12px 12px 14px 12px;
+  background: linear-gradient(to top, rgba(247,247,248,1), rgba(247,247,248,0.92));
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Input focus glow */
+textarea:focus,
+input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
+}

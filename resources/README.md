@@ -2,7 +2,8 @@
 
 ## n8n
 - [Official Tutorial](https://docs.n8n.io/advanced-ai/intro-tutorial/)
-- [AI Template Library](https://n8n.io/workflows/categories/ai/)
+- [Installing n8n locally](https://docs.n8n.io/hosting/)
+- [n8n AI Template Library](https://n8n.io/workflows/categories/ai/)
 
 ## RAG
 - [Hands-on RAG for Production [Book]](https://www.oreilly.com/library/view/hands-on-rag-for/9798341621701/)
@@ -17,4 +18,3 @@
 ## Evaluation / Monitoring
 - [Evals in n8n](https://docs.n8n.io/advanced-ai/evaluations/overview/)
 - [Microsoft LLM Evaluation Playbook](https://learn.microsoft.com/en-us/ai/playbook/technology-guidance/generative-ai/working-with-llms/evaluation/list-of-eval-metrics)
-

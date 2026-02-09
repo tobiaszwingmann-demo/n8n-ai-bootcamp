@@ -1,0 +1,596 @@
+{
+  "name": "P6 – Workflow Logic",
+  "nodes": [
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"prio\": \"Automated\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -352,
+        608
+      ],
+      "id": "c34deb70-0ed4-4d00-a9ed-b68af3408642",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nWelcome to our IT support. Please tell us your name to get started:",
+        "options": {
+          "inputPlaceholder": "Type your name.."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -720,
+        384
+      ],
+      "id": "144cf6c0-2c8b-4e27-b6cb-5af4aab4bd51",
+      "name": "When chat message received",
+      "webhookId": "220d5913-86d7-43af-8748-3974e2af553b"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        416
+      ],
+      "id": "696f2913-a9b0-4a41-963d-6ad0c93f202d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1aa1625c-3a2b-4e9d-8d7c-d8207e03d6f9",
+              "leftValue": "={{ $json.output.prio }}",
+              "rightValue": "Automated",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -144,
+        384
+      ],
+      "id": "df0ab08d-95e4-4af7-9290-03d1223007f3",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"Name\": \"Tobias\",\n\t\"Description\": \"My laptop fell down\",\n    \"Response\": \"Sorry to hear that! IT will be in touch shortly!\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        816
+      ],
+      "id": "13517736-ccbd-4cb0-a6f4-21d0379b8155",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "267dcef0-9799-47ff-b11a-dca92d81f83b",
+              "name": "ID",
+              "value": "={{ $now.ts.toString(36).toUpperCase() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        432,
+        592
+      ],
+      "id": "a1625f38-b326-46ba-a4db-1cd673a07df5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "tobiaszwingmann-demo",
+          "mode": "list",
+          "cachedResultName": "tobiaszwingmann-demo",
+          "cachedResultUrl": "https://github.com/tobiaszwingmann-demo"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8n-ai-bootcamp",
+          "mode": "list",
+          "cachedResultName": "n8n-ai-bootcamp",
+          "cachedResultUrl": "https://github.com/tobiaszwingmann-demo/n8n-ai-bootcamp"
+        },
+        "filePath": "=day 1/project 6/tickets/{{ $('Edit Fields').item.json.ID }}.txt",
+        "fileContent": "=Prio: {{ $json.output.prio }}\n\nName: {{ $('Ticket Writer').item.json.output.Name }}\n\nSubmitted: {{ $now }}\n\nDescription:\n{{ $('Ticket Writer').item.json.output.Description }}",
+        "commitMessage": "new ticket"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        1008,
+        592
+      ],
+      "id": "6526c42c-dd40-4d73-b971-89d7ade5b7d8",
+      "name": "Create a file",
+      "webhookId": "0b3813e2-6615-4593-95c6-35c19c3333ee",
+      "credentials": {
+        "githubApi": {
+          "id": "dcwZECd0FxhzyJj3",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"prio\": \"Urgent\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        800,
+        816
+      ],
+      "id": "f7b37c3e-306b-4399-ba7e-a1ca731093b7",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1f959a5b-723b-4572-a3ff-f939cca69a85",
+              "name": "output",
+              "value": "={{ $('Ticket Writer').item.json.output.Response }}\n\nYour Ticket ID is: {{ $('Edit Fields').item.json.ID }}.\n\nThis chat will now be closed. \n\nHave a great day!",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1232,
+        592
+      ],
+      "id": "3db15157-74f2-4027-8e6e-d95214674f8b",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "=### **Role**\n\nYou are an **IT Support Chatbot** for a corporate helpdesk.\nYour role is to provide **first-level technical support** to employees who use **Windows** and **Microsoft Office applications** (Word, Excel, Outlook, PowerPoint, Teams, etc.).\n\n### **Your Objectives:**\n1. Ask the user about their name\n2. Understand the user’s problem clearly.\n3. Once the user provided their name and problem , provide **immediate troubleshooting steps** or quick answers when possible. Do not provide help until you know the name and problem.\n\n### **Response Guidelines:**\n* Use short paragraphs or numbered steps.\n* When suggesting commands or settings, write them exactly as they appear in Windows or Office.\n* Ask follow-up questions as needed.\n* If you don't know the answer, say: \"Sorry, I can't help with that.\"\n\n### **Example Response Style:**\n\n**User:** “I can’t open Excel files.”\n**Chatbot:**\n\n> Let’s try a quick fix:\n>\n> 1. Close all Excel windows.\n> 2. Press **Windows + R**, type `excel /safe`, and press **Enter** to open Excel in Safe Mode.\n> 3. Try opening the file again.\n>\n> Did that work? If not, we can check add-ins next or escalate to IT support."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        80,
+        80
+      ],
+      "id": "04e7aa53-b29b-4c02-8711-5356710affaf",
+      "name": "Chatbot"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Create a ticket given the message history and a response to the user (letting them now that their request has been forwarded to IT and they'll be in touch soon) using the following fields:\n\n- Name: <name of the user>\n- Issue description: <summary of the issue, 1-2 sentences max.>\n- Ticket ID: {{ $json.ID }}\n- Response: <personal response, 1 sentence.>"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        80,
+        592
+      ],
+      "id": "e94fc7b5-8c4d-40f2-a9e7-09542b11eb50",
+      "name": "Ticket Writer"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Issue:\n\n```\n{{ $('When chat message received').item.json.chatInput }}\n```",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=### **Role**\n\nYou are a text classification system for an IT helpdesk.\nYour task is to decide whether an incoming IT support request can be handled **automatically** by the chatbot or needs to be **routed to a human IT technician**.\n\n### **Default Behavior:**\n\nAssume **all requests can be automated** unless there are clear indicators that human IT support is required.\n\n### **Classification Labels:**\n\n* **Automated** — The issue is simple, routine, or can likely be resolved using self-service troubleshooting.\n* **Route to IT** — The issue is complex, high-risk, or contains keywords/topics suggesting it requires human involvement.\n\n### **Route to IT** if the request includes **Keywords or topics** such as:\n\n   * *hardware*, *broken*, *damaged*, *replacement*, *repair*\n   * *network down*, *server*, *outage*, *system crash*\n   * *admin rights*, *installation*, *permissions*, *access denied*\n   * *security*, *breach*, *virus*, *phishing*, *data loss*\n   * *urgent*, *critical*, *can’t work*, *system not starting*\n   * *new equipment*, *device setup*, *hardware request*\n   * *user demands human assistance* \n\n### **Otherwise:**\n\nClassify as **Automated** — including typical Windows, Office app, network, or login troubleshooting that follows standard steps."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -496,
+        384
+      ],
+      "id": "cf3a53d1-ebd6-418a-89a7-bbf8df9e908a",
+      "name": "Router"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Issue:\n\n```\n{{ $('Ticket Writer').item.json.output.Description }}\n```",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=**Role**\n\nYou are a text classification system for an IT support helpdesk.\nYour task is to read an incoming support ticket and classify it as either **\"Urgent\"** or **\"Not urgent\"** based on the content.\n\n### Classification Rules:\n\n* **Urgent** if the ticket describes:\n\n  * Complete system or network outages.\n  * Inability to perform critical work tasks.\n  * Security breaches or data loss.\n  * Hardware failure affecting essential operations.\n  * Issues impacting multiple users or key business functions.\n  * Time-sensitive problems needing immediate attention.\n\n* **Not urgent** if the ticket describes:\n\n  * Minor bugs or usability issues.\n  * Requests for information, training, or feature changes.\n  * Scheduled maintenance or non-critical updates.\n  * Problems with available workarounds.\n  * Single-user issues not blocking essential tasks.\n\n### Output Format:\n\nRespond **only** with one of the following labels:\n\n* `Urgent`\n* `Not urgent`\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        656,
+        592
+      ],
+      "id": "72e8d69d-bd64-47ed-b9d3-e745f66d8805",
+      "name": "Urgency"
+    },
+    {
+      "parameters": {
+        "content": "## Router\nDecide whether Chatbot should answer or Ticket should be created for human support",
+        "height": 496,
+        "width": 368
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -560,
+        256
+      ],
+      "typeVersion": 1,
+      "id": "3bbd531f-3518-4d0e-afc9-97cd070dfdea",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Chatbot\nHandle support question automatically",
+        "height": 432,
+        "width": 704,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "f33eccc5-17cf-4691-96fa-44947044f8a9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Ticket\nCreate Ticket for human support",
+        "height": 464,
+        "width": 1536,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "a3e1dcd3-807d-4504-996b-c97e0a4c7d50",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        608
+      ],
+      "id": "b3cd42dc-19ca-4cd5-8793-b76f21e6aa31",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DccUcMMK12JiKk1S",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        64,
+        816
+      ],
+      "id": "b144ddb0-34dc-4427-8ae6-9dd597b4fa1a",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DccUcMMK12JiKk1S",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        288
+      ],
+      "id": "a38dbd28-c1a1-4ed3-88da-99f9189ec235",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DccUcMMK12JiKk1S",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        608,
+        816
+      ],
+      "id": "e83cf2d5-6cd2-42b0-844c-1dc293f42a3e",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DccUcMMK12JiKk1S",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Router",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chatbot",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Ticket Writer",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Chatbot",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ticket Writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Ticket Writer",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Urgency",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Urgency",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a file": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ticket Writer": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Router": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Urgency": {
+      "main": [
+        [
+          {
+            "node": "Create a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Router",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Ticket Writer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Chatbot",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Urgency",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ac340c84-00d6-40c8-bc85-8683006e3e26",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "26bf8eec37d4d0a7ee8a9b62eaf593a40b0ce784017882c7b978518d626df3a8"
+  },
+  "id": "hwhTfjPXOKp7VaEtCGv4y",
+  "tags": [
+    {
+      "updatedAt": "2026-02-08T20:46:07.403Z",
+      "createdAt": "2026-02-08T20:46:07.403Z",
+      "id": "1TjIuZa5ju0lNrOc",
+      "name": "O'Reilly n8n"
+    }
+  ]
+}

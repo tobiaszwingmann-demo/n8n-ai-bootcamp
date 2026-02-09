@@ -1,0 +1,8 @@
+Prio: Urgent
+
+Name: Tobias
+
+Submitted: 2026-02-09T19:32:48.730+01:00
+
+Description:
+Tobias is unable to open Excel; safe mode troubleshooting did not resolve the issue.

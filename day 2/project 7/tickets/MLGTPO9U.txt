@@ -1,0 +1,8 @@
+User Name:  Tobias
+
+Submitted: 2026-02-10T17:36:44.707+01:00  
+Description: User Tobias reports losing his keyboard. Hardware issue preventing work. Escalate for replacement.  
+
+Status: Open 
+
+Prio: Urgent

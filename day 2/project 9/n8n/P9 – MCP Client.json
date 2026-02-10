@@ -3,18 +3,66 @@
   "nodes": [
     {
       "parameters": {
+        "public": true,
+        "authentication": "n8nUserAuth",
+        "initialMessages": "Welcome to our automated IT support. How can we help you today?",
+        "options": {
+          "inputPlaceholder": "Type your name.."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        144,
+        16
+      ],
+      "id": "3c957940-e70f-4f37-944b-0286ec979e4a",
+      "name": "When chat message received",
+      "webhookId": "8256d3cd-1780-4ff3-a050-675b26ce1cf1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "### **Role**\n\nYou are an **IT Support Chatbot** for a corporate helpdesk.\nYou assist employees with the **Nova CRM**, **Windows** and **Microsoft Office** issues, and manage **support tickets**.\n\nYou can:\n\n* Troubleshoot common technical issues.\n* Answer questions about **Nova CRM** using the search tool\n* Decide when to **escalate** to a human IT technician.\n* **Create**, **update**, and **retrieve** tickets using your tools.\n\n---\n\n### **Conversation Flow**\n\n1. **Start** by asking whether the user already has a ticket ID.\n   * If yes → retrieve the ticket.\n   * If no → ask for the user’s **name** and **problem description**.\n\n2. **Classify the issue:**\n\n   * **Automated** → Routine or self-service problem (Windows, Office, login, Teams, etc.).\n   * **Route to IT** → Contains keywords like *hardware, repair, network down, outage, admin rights, security, virus, data loss, urgent*, or when unsure.\n\n3. **Respond:**\n\n   * If **Automated**, give clear, numbered troubleshooting steps.\n   * If **Route to IT**, say:\n\n     > “This looks like it needs a human IT technician. I’ll escalate it for you.”\n     > Then **create a ticket** and share the ID.\n\n4. **Ticket Management:**\n\n   * **Create** → when logging or escalating new issues.\n   * **Update** → when adding progress or notes.\n   * **Retrieve** → when a ticket ID is provided.\n\n---\n\n### **Details**\n* Whether a ticket is urgent or not is classified by *YOU*, not the user\n\n### **Response Style**\n\n* Short, direct, step-by-step answers.\n* Quote commands exactly (e.g., `excel /safe`).\n* Confirm after each step.\n* If unable to help, escalate politely.\n\n---\n\n### **Example**\n\n**User:** “I can’t open Excel files.”\n**Chatbot:**\n\n> Do you already have a ticket ID?\n>\n> Thanks, [Name]. Try this:\n>\n> 1. Close all Excel windows.\n> 2. Press **Windows + R**, type `excel /safe`, and press **Enter`.\n> 3. Try reopening the file.\n>\n> Did that work? If not, I can create a ticket for escalation."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        16
+      ],
+      "id": "322dc39c-0fd0-4b64-bcbe-8e3760ea8831",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        240
+      ],
+      "id": "98f8993d-c980-47a0-b877-65ccc497ecb4",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
         "content": "**Tools**",
-        "height": 176,
+        "height": 208,
         "width": 368,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        400,
-        192
+        592,
+        176
       ],
       "typeVersion": 1,
-      "id": "a61fbaf1-05b2-4792-952d-0043b47cdd4e",
+      "id": "bc69ddf2-a441-4897-be3d-c565f9bbb137",
       "name": "Sticky Note"
     },
     {
@@ -25,10 +73,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        96,
-        224
+        320,
+        240
       ],
-      "id": "6f1adf74-becd-435f-be80-6d0f1ffe11f6",
+      "id": "623c9891-b246-44f6-89df-7b2e5bb78d0a",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -39,47 +87,18 @@
     },
     {
       "parameters": {
-        "contextWindowLength": 15
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        256,
-        240
-      ],
-      "id": "d84128b9-c67c-42b8-b75e-f433472df7ae",
-      "name": "Memory"
-    },
-    {
-      "parameters": {
-        "public": true,
-        "initialMessages": "Welcome to our automated IT support. How can we help you today?",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.4,
-      "position": [
-        128,
-        16
-      ],
-      "id": "72af6f43-077b-43fe-91b5-e06f3589e1ae",
-      "name": "When chat message received",
-      "webhookId": "64b74ace-b49e-4182-86e8-31f61573ca3c"
-    },
-    {
-      "parameters": {
         "description": "Call this tool to search the user manual of the Nova CRM software.",
         "workflowId": {
           "__rl": true,
-          "value": "mY6glsuk-XAkNv3tfCU4r",
+          "value": "b7x7mCDlW8NK_kxMCYvH6",
           "mode": "list",
-          "cachedResultUrl": "/workflow/mY6glsuk-XAkNv3tfCU4r",
+          "cachedResultUrl": "/workflow/b7x7mCDlW8NK_kxMCYvH6",
           "cachedResultName": "P8 – Document Search"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `Search query for Nova CRM manuals.`, 'string') }}"
           },
           "matchingColumns": [
             "query"
@@ -103,66 +122,35 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        608,
+        656,
         240
       ],
-      "id": "50eeebc7-234f-4e14-a028-8658bb84789d",
-      "name": "Search CRM"
-    },
-    {
-      "parameters": {
-        "options": {
-          "systemMessage": "### **Role**\n\nYou are an **IT Support Chatbot** for a corporate helpdesk.\nYou assist employees with **NovaCRM**, **Windows** and **Microsoft Office** issues, and manage **support tickets**.\n\nYou can:\n\n* Troubleshoot common technical issues.\n* Answer questions about the internal NovaCRM tool-\n* Decide when to **escalate** to a human IT technician.\n* **Create**, **update**, and **retrieve** tickets using your tools.\n\n---\n\n### **Conversation Flow**\n\n1. **Start** by asking whether the user already has a ticket ID.\n   * If yes → retrieve the ticket.\n   * If no → ask for the user’s **name** and **problem description**.\n\n2. **Classify the issue:**\n\n   * **Automated** → Routine or self-service problem (Windows, Office, login, Teams, etc.).\n   * **Route to IT** → Contains keywords like *hardware, repair, network down, outage, admin rights, security, virus, data loss, urgent*, or when unsure.\n\n3. **Respond:**\n\n   * If **Automated**, give clear, numbered troubleshooting steps.\n   * If **Route to IT**, say:\n\n     > “This looks like it needs a human IT technician. I’ll escalate it for you.”\n     > Then **create a ticket** and share the ID.\n\n4. **Ticket Management:**\n\n   * **Create** → when logging or escalating new issues.\n   * **Update** → when adding progress or notes.\n   * **Retrieve** → when a ticket ID is provided.\n\n---\n\n### **Details**\n* Whether a ticket is urgent or not is classified by *YOU*, not the user\n\n### **Response Style**\n\n* Short, direct, step-by-step answers.\n* Quote commands exactly (e.g., `excel /safe`).\n* Confirm after each step.\n* If unable to help, escalate politely.\n\n---\n\n### **Example**\n\n**User:** “I can’t open Excel files.”\n**Chatbot:**\n\n> Do you already have a ticket ID?\n>\n> Thanks, [Name]. Try this:\n>\n> 1. Close all Excel windows.\n> 2. Press **Windows + R**, type `excel /safe`, and press **Enter`.\n> 3. Try reopening the file.\n>\n> Did that work? If not, I can create a ticket for escalation."
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3.1,
-      "position": [
-        368,
-        16
-      ],
-      "id": "51822736-5b13-4878-84cc-a1ba0fb4ccda",
-      "name": "AI Agent"
+      "id": "212dbc4f-e13c-4b0e-a773-da178bf53666",
+      "name": "Search CRM Tool"
     },
     {
       "parameters": {
         "endpointUrl": "http://localhost:5678/mcp/edd5ffc1-e861-4354-85e7-e95ce9195c93",
+        "include": "selected",
+        "includeTools": [
+          "Create_Ticket_Tool",
+          "Get_ticket",
+          "Update_ticket"
+        ],
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
       "typeVersion": 1.2,
       "position": [
-        464,
+        832,
         240
       ],
-      "id": "c37dd378-6729-4185-98d7-8762b7be9c66",
-      "name": "MCP Client"
+      "id": "dfaddbed-066e-4a21-a588-b069fdbfa3d4",
+      "name": "Ticketing MCP Client"
     }
   ],
   "pinData": {},
   "connections": {
-    "Google Gemini Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "When chat message received": {
       "main": [
         [
@@ -174,7 +162,29 @@
         ]
       ]
     },
-    "Search CRM": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search CRM Tool": {
       "ai_tool": [
         [
           {
@@ -185,7 +195,7 @@
         ]
       ]
     },
-    "MCP Client": {
+    "Ticketing MCP Client": {
       "ai_tool": [
         [
           {
@@ -203,12 +213,11 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "3c98b425-1c4e-42e1-af60-cde7db6daeca",
+  "versionId": "32a5e59f-0b58-4c21-8ff6-74d905ed92a0",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "26bf8eec37d4d0a7ee8a9b62eaf593a40b0ce784017882c7b978518d626df3a8"
   },
-  "id": "0qBEXp94nHFJkk4O",
+  "id": "uknHzaAybfu4I7Kh",
   "tags": [
     {
       "updatedAt": "2026-02-08T20:46:07.403Z",

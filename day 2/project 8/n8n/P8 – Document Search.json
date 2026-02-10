@@ -14,10 +14,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -32,
-        -176
+        0,
+        0
       ],
-      "id": "a5929a02-dc2e-4124-8112-e2cd2d52d107",
+      "id": "bba471a8-3fd7-4c11-84a6-2e256697cd23",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -27,10 +27,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
       "typeVersion": 1,
       "position": [
-        272,
-        48
+        304,
+        224
       ],
-      "id": "ed6a5bb1-daf7-4d0e-a51a-e1e5932e860e",
+      "id": "95ba179f-52ad-4d9c-8c50-4bf34c2e07ef",
       "name": "Embeddings Google Gemini",
       "credentials": {
         "googlePalmApi": {
@@ -57,10 +57,10 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "typeVersion": 1.3,
       "position": [
-        192,
-        -176
+        224,
+        0
       ],
-      "id": "eb3b0c89-6d23-4c97-a932-02be22dcd890",
+      "id": "ab5618d3-611f-4725-8332-6df777b83e9c",
       "name": "Pinecone Vector Store",
       "credentials": {
         "pineconeApi": {
@@ -98,10 +98,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        544,
-        -176
+        576,
+        0
       ],
-      "id": "2c4092a3-1e35-43a7-8f32-338026d43013",
+      "id": "557238bd-c4ad-4b3a-acf7-aeff36e4f26a",
       "name": "Relevant Fields"
     },
     {
@@ -112,10 +112,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        768,
-        -176
+        800,
+        0
       ],
-      "id": "9c282819-85fe-42fa-97a7-b240f8f1de5f",
+      "id": "58449361-d091-4fc1-9ada-b90c69166fc9",
       "name": "Aggregate"
     },
     {
@@ -135,10 +135,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        992,
-        -176
+        1024,
+        0
       ],
-      "id": "66288af0-1819-4164-a447-81d91f24ad2f",
+      "id": "bd49d44e-c077-4ef8-a777-f73a2d8298b9",
       "name": "Response"
     }
   ],
@@ -214,12 +214,11 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "77bfa4f1-0f21-4e53-993a-151020856935",
+  "versionId": "385b6123-06bc-472e-bccb-65f2377de83b",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "26bf8eec37d4d0a7ee8a9b62eaf593a40b0ce784017882c7b978518d626df3a8"
   },
-  "id": "mY6glsuk-XAkNv3tfCU4r",
+  "id": "b7x7mCDlW8NK_kxMCYvH6",
   "tags": [
     {
       "updatedAt": "2026-02-08T20:46:07.403Z",

@@ -18,10 +18,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        256
+        704,
+        16
       ],
-      "id": "64a2f572-9237-4f47-8e36-4e5ae683dd18",
+      "id": "13c1f138-97fa-4a84-9952-23184effcf71",
       "name": "Edit Fields"
     },
     {
@@ -46,10 +46,10 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        496,
-        256
+        928,
+        16
       ],
-      "id": "383741dd-37d7-4636-92ba-b0d80707556c",
+      "id": "7e963ec9-879f-4dd3-b198-086c1ad8278a",
       "name": "Create a file",
       "webhookId": "f4db0966-dd9d-4198-8668-c56762934b2c",
       "credentials": {
@@ -81,10 +81,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        48,
-        256
+        480,
+        16
       ],
-      "id": "926038c4-9962-4fd0-9135-fc7fda341bc2",
+      "id": "68267432-76b9-435a-9e69-e553456de4e4",
       "name": "When Executed by Another Workflow"
     }
   ],
@@ -130,11 +130,11 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "32b800c5-05b4-41de-94e7-e32348bc91ae",
+  "versionId": "93ba929f-82d2-4601-8715-3f3df96848be",
   "meta": {
     "instanceId": "26bf8eec37d4d0a7ee8a9b62eaf593a40b0ce784017882c7b978518d626df3a8"
   },
-  "id": "KL49reSx5uAm3kf5WS0X0",
+  "id": "AR8XRwHZ1KGG2CzLsYG_3",
   "tags": [
     {
       "updatedAt": "2026-02-08T20:46:07.403Z",

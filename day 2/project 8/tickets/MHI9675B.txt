@@ -1,9 +1,0 @@
-User Name: Tobias
-
-Submitted: 2025-11-02T22:58:26.740+01:00
-
-Description:
-User cannot see a newly created contact in Nova CRM. User requests direct help from human technician. Troubleshooting not performed in chat. Needs assistance to verify record creation, ownership/permissions, module (Lead vs Contact), filters/views, and audit logs. Browser/platform not confirmed.
-
-Status: Open
-Prio: Not Urgent

@@ -1,8 +1,13 @@
-User Name:  Tobias
+User Name: Tobias
 
-Submitted: 2026-02-10T17:36:44.707+01:00  
-Description: User Tobias reports losing his keyboard. Hardware issue preventing work. Escalate for replacement.  
+Submitted: 2026-02-10T17:36:44.707+01:00
 
-Status: Open 
+Description:
+User Tobias reports losing his keyboard. Hardware issue preventing work. Escalate for replacement.
 
+Status: Closed
 Prio: Urgent
+
+Activity Log:
+2026-02-10T17:36:44.707+01:00 - Ticket created (Urgent). Escalated for hardware replacement.
+2026-02-10T18:00:00.000+01:00 - User reported: "I found it!". Issue resolved. Ticket closed.

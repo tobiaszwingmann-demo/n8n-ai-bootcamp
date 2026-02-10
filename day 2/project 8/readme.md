@@ -1,5 +1,14 @@
 # P8 – Advanced Agent
 
+This project combines:
+
+- AI support chatbot
+- Knowledge base search (RAG)
+- Ticket management
+- GitHub storage
+
+It consists of four workflows that work together.
+
 ## Part 1: Document Ingestion
 
 **Purpose:**
@@ -50,10 +59,10 @@ Convert all CRM documentation into vector embeddings for searchable access by th
 
 | Parameter           | Value   |
 | ------------------- | ------- |
-| **Operation Mode**  | insert  |
-| **Index**           | support |
-| **Namespace**       | it      |
-| **Clear Namespace** | false   |
+| **Operation Mode**  | `insert`  |
+| **Index**           | `documents` |
+| **Namespace**       | `it`      |
+| **Clear Namespace** | `false`   |
 
 ---
 
@@ -61,8 +70,8 @@ Convert all CRM documentation into vector embeddings for searchable access by th
 
 | Parameter      | Value                    |
 | -------------- | ------------------------ |
-| **Model**      | `text-embedding-3-large` |
-| **Dimensions** | 1024                     |
+| **Model**      | `gemini-embedding-001` |
+| **Dimensions** | 3072                     |
 
 ---
 

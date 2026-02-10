@@ -1,50 +1,18 @@
-# P7 – Simple Agent
+# P7 – Build a Simple Agent With Custom Tools
 
-## Workflow (Part 1)
+## Part 1: Simple Agent Workflow
 
 **Purpose:** Create an interactive IT support chatbot agent that can chat with users, troubleshoot common problems, and manage support tickets (create, update, and retrieve).
 
-**Trigger:** Chat message (`Chat Trigger`)
+### 1. Create New Workflow
+- n8n home --> New workflow
 
-**Nodes:**
+### 2. Add `AI Agent` node
 
-1. When chat message received
-2. AI Agent
+**Source**: Chat Connected Chat Trigger Node
 
-   2.1 Gemini Chat Model
-
-   2.2 Simple Memory
-
-   2.3 Get ticket
-
-   2.4 Update ticket
-
----
-
-#### Node 1: When chat message received
-
-**Type:** `Chat Trigger (@n8n/n8n-nodes-langchain.chatTrigger)`
-
-| Parameter             | Value                                                           |
-| --------------------- | --------------------------------------------------------------- |
-| **Public**            | true                                                            |
-| **Authentication**    | n8nUserAuth                                                     |
-| **Initial Message**   | Welcome to our automated IT support. How can we help you today? |
-| **Input Placeholder** | Type your name..                                                |
-
----
-
-#### Node 2: AI Agent
-
-**Type:** `Agent (@n8n/n8n-nodes-langchain.agent)`
-
-| Parameter         | Value                                                       |
-| ----------------- | ----------------------------------------------------------- |
-| **Prompt Type**   | define                                                      |
-| **Text Input**    | `{{ $('When chat message received').item.json.chatInput }}` |
-| **System Prompt** |                                                             |
-
-```markdown
+**System Message**
+```
 ### **Role**
 
 You are an **IT Support Chatbot** for a corporate helpdesk.
@@ -113,72 +81,68 @@ You can:
 > Did that work? If not, I can create a ticket for escalation.
 ```
 
----
+**Settings**
 
-#### Subnode 2.1: Gemini Chat Model
+- Retry On Fail: `On`
+- Max. Tries: `3`
 
-| Parameter            | Value          |
-| -------------------- | -------------- |
-| **Model**            | gemini-3-flash |
-| **Reasoning Effort** | low            |
-| **Credential**       | Gemini account |
+### 3. Add `Gemini Chat Model` node
+- Pick `gemini-3-flash-preview` or `gemini-2.5-flash`
 
----
+### 4. Add `Simple Memory` node
+- Context Window Length: `10`
 
-#### Subnode 2.2: Simple Memory
+### 5. Add Tools
 
-**Purpose:** Maintain short-term chat history for contextual responses.
+#### 5.1 Add `Github Get File` Tool
+**Tool Description**
+```
+Load a ticket from GitHub
+```
 
-| Parameter                 | Value |
-| ------------------------- | ----- |
-| **Context Window Length** | 10    |
+**Resource:**: `file`
 
----
+**Operation**: `get`
 
-#### Subnode 2.3: Get ticket
+**Owner**: `your-github-username`
 
-| Parameter            | Value                                          |
-| -------------------- | ---------------------------------------------- |
-| **Operation**        | get                                            |
-| **Resource**         | file                                           |
-| **Authentication**   | oAuth2                                         |
-| **Owner**            | tobiaszwingmann                                |
-| **Repository**       | demo-building-ai-workflows-and-agents-with-n8n |
-| **File Path**        | **Defined automatically by the model**.        |
-| **Tool Description** | Load a ticket from GitHub for reference.       |
+**Repository**: `n8n-ai-bootcamp` (forked)
 
-**File Path Description** 
-```markdown 
-Tickets are stored in the directory `day 2/project 7/tickets/`.
-Example path: "day 2/project 7/tickets/MHGPYF9K.txt"`
-``` 
+**File Path**: *Defined automatically by the model*
 
----
-
-#### Subnode 2.4: Update ticket
-
-**Type:** `GitHub Tool (n8n-nodes-base.githubTool)`
-**Purpose:** Update an existing ticket on GitHub.
-
-| Parameter            | Value                                               |
-| -------------------- | --------------------------------------------------- |
-| **Operation**        | edit                                                |
-| **Resource**         | file                                                |
-| **Authentication**   | oAuth2                                              |
-| **Owner**            | tobiaszwingmann                                     |
-| **Repository**       | demo-building-ai-workflows-and-agents-with-n8n      |
-| **File Path**        | **Defined automatically by the model**              |
-| **File Content**     | **Defined automatically by the model**              |
-| **Commit Message**   | **Defined automatically by the model**              |
-| **Tool Description** | Update a ticket on GitHub.                          |
-
-**File Path Description** 
-```markdown
+**File Path Descrription** 
+```
 Tickets are stored in the directory `day 2/project 7/tickets/`.
 Example path: "day 2/project 7/tickets/MHGPYF9K.txt"
 ```
-**File Content Description** 
-```markdown
+
+#### 5.2 Add `Github Edit File` Tool
+**Tool Description**
+```
+Update a ticket on GitHub
+```
+
+**Resource**: `file`
+
+**Operation**: `edit`
+
+**Owner**: `your-github-username`
+
+**Repository**: `n8n-ai-bootcamp` (forked)
+
+**File Path**: *Defined automatically by the model*
+
+**File Path Descrription** 
+```
+Tickets are stored in the directory `day 2/project 7/tickets/`.
+Example path: "day 2/project 7/tickets/MHGPYF9K.txt"
+```
+
+**File Content**
+*Defined automatically by the model*
+
+**File Content Description**
+```
 Required fields: "User Name", "Submitted", "Description", "Status", "Prio". 
 Optional fields: "Activity Log"
 
@@ -201,72 +165,61 @@ Activity Log:
 2025-11-01T23:40:00.000+01:00 - User reported: "I can log in now! it works". User regained access to Windows. No further action required at this time. Ticket closed.
 ```
 
----
+**Commit Message**: *Defined automatically by the model*
 
-### Sample Queries
 
-Use the following queries to test the chatbot’s capabilities:
-
-* “I can’t log in to my laptop”
-* “I already have a ticket: MHGUCSN1”
-* “My computer is broken”
-* “Can you update my ticket?”
+### 6. Try it out!
+- Try fetching the ticket ID `MLFNSMXT.txt` using the Chatbot and update it.
 
 ---
 
-## Workflow 2: Create Ticket Tool
-**This workflow is triggered when executed by another workflow (e.g., the Simple Agent).**
+## Part 2: Building a Custom Tool (`Create Ticket` Tool)
 
-**Tip:** Copy the "Create Ticket" workflow from P3
+You will build a custom n8n workflow which can be added to the AI agent as a tool. In this example, the workflow will generate a new ticket ID and create a new ticket.
 
-**Trigger:** Executed by another workflow (`Execute Workflow Trigger`)
+### 1. Create New Workflow
+- n8n home --> New workflow
 
-**Nodes:**
-1. When Executed by Another Workflow
-2. Edit Fields
-3. Create a file
+### 2. Add Trigger Node `When Executed by Another Workflow`
+#### Input data mode: `Define using fields below`
 
----
+| Parameter | Type   |
+| ----- | ---------- |
+| User Name | String` |
+| Issue Description | String` |
+| Status | String` |
+| Prio | String` |
 
-## Node 1: When Executed by Another Workflow
+**Pin Test Data**:
+- User Name: `Tobias`
+- Issue Description: `My laptop fell down and is broken now`
+- Status: `Open`
+- Prio: `Urgent`
 
-| Parameter           | Value                                                    |
-| ------------------- | -------------------------------------------------------- |
-| **Workflow Inputs** | - User Name<br>- Issue Description<br>- Status<br>- Prio |
+### 3. Add `Edit Fields` Node
+**Manual Mapping**
+ Name | Type | Value |
+| --- | ---- | ----- |
+| ID | String | `{{ $now.ts.toString(36).toUpperCase() }}` |
 
-**Sample Input:**
 
-| Field                 | Value                                 |
-| --------------------- | ------------------------------------- |
-| **User Name**         | Tobias                                |
-| **Issue Description** | My laptop fell down and is broken now |
-| **Status**            | Open                                  |
-| **Prio**              | Urgent                                |
+### 4. Add `Github Create File` Node
 
----
+**Resource**: `File`
 
-## Node 2: Edit Fields
+**Operation**: `Create`
 
-| Parameter      | Value                                       |
-| -------------- | ------------------------------------------- |
-| **Field Name** | ID                                          |
-| **Expression** | `={{ $now.ts.toString(36).toUpperCase() }}` |
-| **Type**       | string                                      |
+**Repository Owner**: `your-github-username`
 
----
+**Repository Name**: `n8n-ai-bootcamp` (forked)
 
-## Node 3: Create a file
+**File Path**
+```
+day 2/project 7/tickets/{{ $json.ID }}.txt
+```
 
-| Parameter          | Value                                          |
-| ------------------ | ---------------------------------------------- |
-| **Resource**       | File                                           |
-| **Operation**      | Create                                         |
-| **Repository**     | demo-building-ai-workflows-and-agents-with-n8n |
-| **File Path**      | `day 2/project 7/tickets/{{ $json.ID }}.txt`         |
-
-**File Content**:
-
-```markdown
+**File Content**
+```
 User Name: {{ $('When Executed by Another Workflow').item.json['User Name'] }}
 
 Submitted: {{ $now }}
@@ -278,39 +231,66 @@ Status: {{ $('When Executed by Another Workflow').item.json.Status }}
 Prio: {{ $('When Executed by Another Workflow').item.json.Prio }}
 ```
 
-**Commit Message**: `new ticket`
+**Commit Message**
+```
+new ticket
+```
+
+### 5. Try it out!
+- Run a test execution
+
+### 6. Publish
+- Everything work?
+- Click **Publish** to publish your workflow
 
 ---
 
-## Workflow (Part 2)
+## Part 3: Add the Custom Tool to your AI Agent
 
-Add the **Create Ticket Tool** to our agent.
+Let's give your AI Agent access to the custom tool
 
-**Tool Description** 
-```markdown
+### 1. Open AI Agent Workflow from Part 1
+- n8n home --> Open `Simple AI Agent` Workflow
+
+### 2. Add Custom Tool
+- Click the `+` icon under AI Agent Tool
+- Select `Call n8n Workflow Tool`
+  
+#### Custom Tool Settings
+**Description**
+```
 Call this tool to create a new ticket. Status can be "Open" or "Closed". Prio can be "Urgent" or "Not Urgent".
 ```
 
-**Source**: Database
+**Source**: `Database`
 
-**Workflow** Create Ticket Tool
+**Workflow**: `From List` --> `Select the ticket workflow you just created`
 
-**User Name: Defined by the model**
+#### Workflow Inputs
+- **User Name**: *Defined automatically by the model*
+- **Description**
 ```
 Name of the user. Required to follow up later on.
 ```
 
-**Issue: Defined by the model**
+- **Issue Description**: *Defined automatically by the model*
+- **Description**
 ```
 Description of the problem. Required.
 ```
 
-**Status**: **Defined by the model**
+- **Status**: *Defined automatically by the model*
+- **Description**
 ```
 Current status of the ticket. Required. Allowed values: "Open", "Closed"
 ```
 
-**Prio: Defined by the model**
+- **Prio**: *Defined automatically by the model*
+- **Description**
 ```
 Time criticality of the ticket. Required. Allowed values: "Urgent", "Not Urgent"
 ```
+
+### 3. Try it out!
+- Create a new ticket through your agent
+- Check the ticket in Github

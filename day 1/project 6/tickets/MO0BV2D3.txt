@@ -1,0 +1,8 @@
+Prio: Not urgent
+
+Name: User
+
+Submitted: 2026-04-15T19:31:54.036+02:00
+
+Description:
+The user has requested to speak with a human representative instead of the chatbot. Ticket ID: #5281.

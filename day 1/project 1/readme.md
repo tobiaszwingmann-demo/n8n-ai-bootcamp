@@ -36,7 +36,7 @@
 | Parameter      | Value                                                                 |
 | -------------- | --------------------------------------------------------------------- |
 | **Field Name** | ID                                                                    |
-| **Expression** | `={{ $json.submittedAt.toDateTime().ts.toString(36).toUpperCase() }}` |
+| **Expression** | `{{ $json.submittedAt.toDateTime().ts.toString(36).toUpperCase() }}` |
 | **Type**       | string                                                                |
 
 ---
@@ -52,6 +52,6 @@
 | **Authentication** | oAuth2                                                                                                                                                                                                          |
 | **Owner**          | your Github username                                                                                                                                                                  |
 | **Repository**     | your Github repo                                                                                                                                                                  |
-| **File Path**      | `project 1/tickets/{{ $json.ID }}.txt`                                                                                                                                                                          |
+| **File Path**      | `day 1/project 1/tickets/{{ $json.ID }}.txt`                                                                                                                                                                          |
 | **File Content**   | Name: `{{ $('On form submission').item.json['Your Name'] }}`<br>Submitted: `{{ $('On form submission').item.json.submittedAt }}`<br>Description: `{{ $('On form submission').item.json['Issue description'] }}` |
 | **Commit Message** | new ticket                                                                                                                                                                                                      |

@@ -65,7 +65,7 @@ day 2/project 8/documents/
 - Click **Create Index**
 
 ### 5. Configure `Pinecone Vector Stors` Node
-- **Operation Mode**: `Insert Documents
+- **Operation Mode**: `Insert Documents`
 - **Pinecone Index**: `documents`
 - **Embedding Batch Size**: `200`
 Options

@@ -1,0 +1,9 @@
+User Name: Tobias
+
+Submitted: 2026-04-16T17:45:52.215+02:00
+
+Description:
+User Tobias reports that the VPN connection is not available, preventing him from logging into his system.
+
+Status: Open
+Prio: Urgent

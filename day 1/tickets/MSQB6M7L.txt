@@ -1,0 +1,7 @@
+Prioritization: Not urgent
+
+Name: Tobias
+
+Submitted: 2026-08-12T18:33:40.596+02:00
+
+Issue: Cannot open Excel because the user’s mouse was stolen, preventing them from interacting to launch or control Excel.

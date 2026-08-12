@@ -1,298 +1,212 @@
-# P7 – Build a Simple Agent With Custom Tools
+# P8 – Advanced Agent with RAG
+In this project, we'll enhance our AI Agent with access to internal data sources. You can [review the documents here](https://github.com/tobiaszwingmann/n8n-ai-bootcamp/tree/main/day%202/project%208/documents).
 
-## Part 1: Simple Agent Workflow
+## Part 1: Document ingestion
 
-**Purpose:** Create an interactive IT support chatbot agent that can chat with users, troubleshoot common problems, and manage support tickets (create, update, and retrieve).
+**Purpose:** Load internal data sources into a vector data store so the AI Agent can perform a semantic search and retrieve relevant pieces of information during the conversation.
 
 ### 1. Create New Workflow
 - n8n home --> New workflow
-- Name: `P7 - Simple AI Agent`
+- Name the workflow `P8 - Document Ingestion`
 
-### 2. Add `AI Agent` node
-- New node `AI Agent`
-Parameters:
-- **Source**: Chat Connected Chat Trigger Node
-- **System Message**
-```
-### **Role**
+### 2. Add `Manual Trigger` node
 
-You are an **IT Support Chatbot** for a corporate helpdesk.
-You assist employees with **Windows** and **Microsoft Office** issues, and manage **support tickets**.
-
-You can:
-
-* Troubleshoot common technical issues.
-* Decide when to **escalate** to a human IT technician.
-* **Create**, **update**, and **retrieve** tickets using your tools.
-
----
-
-### **Conversation Flow**
-
-1. **Start** by asking whether the user already has a ticket ID.
-   * If yes → retrieve the ticket.
-   * If no → ask for the user’s **name** and **problem description**.
-
-2. **Classify the issue:**
-
-   * **Automated** → Routine or self-service problem (Windows, Office, login, Teams, etc.).
-   * **Route to IT** → Contains keywords like *hardware, repair, network down, outage, admin rights, security, virus, data loss, urgent*, or when unsure.
-
-3. **Respond:**
-
-   * If **Automated**, give clear, numbered troubleshooting steps.
-   * If **Route to IT**, say:
-
-     > “This looks like it needs a human IT technician. I’ll escalate it for you.”
-     > Then **create a ticket** and share the ID.
-
-4. **Ticket Management:**
-
-   * **Create** → when logging or escalating new issues.
-   * **Update** → when adding progress or notes.
-   * **Retrieve** → when a ticket ID is provided.
-
----
-
-### **Details**
-* Whether a ticket is urgent or not is classified by *YOU*, not the user
-
-### **Response Style**
-
-* Short, direct, step-by-step answers.
-* Quote commands exactly (e.g., `excel /safe`).
-* Confirm after each step.
-* If unable to help, escalate politely.
-
----
-
-### **Example**
-
-**User:** “I can’t open Excel files.”
-**Chatbot:**
-
-> Do you already have a ticket ID?
->
-> Thanks, [Name]. Try this:
->
-> 1. Close all Excel windows.
-> 2. Press **Windows + R**, type `excel /safe`, and press **Enter`.
-> 3. Try reopening the file.
->
-> Did that work? If not, I can create a ticket for escalation.
-```
-
-**Settings**
-- Retry On Fail: `On`
-- Max. Tries: `3`
-
-### 3. Add `Gemini Chat Model` node
-- Pick `gemini-3-flash-preview` or `gemini-2.5-flash`
-
-### 4. Add `Simple Memory` node
-- Context Window Length: `10`
-
-### 5. Add Tools
-
-#### 5.1 Add `Github Get File` Tool
-**Tool Description**
-```
-Load a ticket from GitHub
-```
-
-**Resource:**: `file`
-
-**Operation**: `get`
-
-**Owner**: `your-github-username`
-
-**Repository**: `n8n-ai-bootcamp` (forked)
-
-**File Path**: *Defined automatically by the model*
-
-**File Path Descrription** 
-```
-Tickets are stored in the directory `day 2/project 7/tickets/`.
-Example path: "day 2/project 7/tickets/MHGPYF9K.txt"
-```
-
-**Binary**: `False`
-
-#### 5.2 Add `Github Edit File` Tool
-**Tool Description**
-```
-Update a ticket on GitHub
-```
+### 3. Add `Github List File` Node
 
 **Resource**: `file`
 
-**Operation**: `edit`
+**Operation**: `list`
 
 **Owner**: `your-github-username`
 
 **Repository**: `n8n-ai-bootcamp` (forked)
 
-**File Path**: *Defined automatically by the model*
-
-**File Path Descrription** 
+**Path** 
 ```
-Tickets are stored in the directory `day 2/project 7/tickets/`.
-Example path: "day 2/project 7/tickets/MHGPYF9K.txt"
+day 2/project 8/documents/
 ```
 
-**File Content**
-*Defined automatically by the model*
+### 3. Add `Github Get File` Node
 
-**File Content Description**
+**Resource**: `file`
+
+**Operation**: `Get`
+
+**Owner**: `your-github-username`
+
+**Repository**: `n8n-ai-bootcamp` (forked)
+
+**File Path** 
 ```
-Required fields: "User Name", "Submitted", "Description", "Status", "Prio". 
-Optional fields: "Activity Log"
-
-## Example Ticket:
-User Name: Tobias
-
-Submitted: 2025-11-01T23:15:54.110+01:00
-
-Description:
-User Tobias cannot sign into Windows on company laptop. Device is domain-joined. User reports no access to desktop and requests immediate assistance. Unable to authenticate at login screen; needs urgent account or device support.
-
-Status: Closed
-Prio: Urgent
-
-## Optional – Activity Log:
-When making updates, append an activity log like so:
-
-Activity Log:
-2025-11-01T23:15:54.110+01:00 - Ticket created (Urgent). Escalated to human IT technician for account/machine support.
-2025-11-01T23:40:00.000+01:00 - User reported: "I can log in now! it works". User regained access to Windows. No further action required at this time. Ticket closed.
+{{ $json.path }}
 ```
 
-**Commit Message**: *Defined automatically by the model*
+**As Binary Property**: `True`
 
+**Put Output File in Field**: `data`
 
-### 6. Try it out!
-- Try fetching the ticket ID `MLFNSMXT` using the Chatbot and update it.
+### 4. Add `Pinecone Vector Stors` Node
 
+#### 4.1 Add Pinecone credential
+- Go to the [Pinecone website](https://www.pinecone.io/)
+- Click **Start building** / **Sign up for free**
+- Enter your Email --> Confirm code
+- Copy the **API Key**
+- Paste the API Key into **n8n Pinecone Credentials**
+
+#### 4.2 Create Pinecone index
+- In Pinecone, click **Create index**
+- Index name: `documents`
+- Choose **Manual Configuration**
+- For **Gemini Embeddings**, choose:
+  - Vector type: `Dense`
+  - Dimension size: `3072`
+  - Metric: `cosine`
+- Click **Create Index**
+
+### 5. Configure `Pinecone Vector Stors` Node
+- **Operation Mode**: `Insert Documents`
+- **Pinecone Index**: `documents`
+- **Embedding Batch Size**: `20`
+Options
+- **Pinecone Namespace**: `it`
+- **Clear Namespace**: `true`
+
+**Note**: `Clear Namespace` runs on every cycle. If the number of chunks exceeds the `Emdedding Batch Size`, only the last run will be stored. In this case, increase batch size or disable `Clear namespace`.
+
+#### 5.1 Subnodes
+Model
+- **Embeddings**: Add `Embeddings Google Gemini` node
+- **Model**: `gemini-embedding-001`
+
+Data Loader
+- Add **Default Data Loader** Node
+- **Type of Data**: `Binary`
+- **Mode**: `Load All Input Data`
+- **Data Format**: `Automatically Detect by Mime Type`
+- **Text Splitting**: `Simple`
+Options:
+- **Split Pages in PDF**: `True`
+- **Metadata**
+   - Name: `file_name`
+   - Value: `{{ $json.name }}`
+
+### 5. Try it out!
+- Run the workflow
+- Check the embedded documents in Pinecone
 ---
 
-## Part 2: Building a Custom Tool (`Create Ticket` Tool)
+## Part 2: Document retrieval
 
-You will build a custom n8n workflow which can be added to the AI agent as a tool. In this example, the workflow will generate a new ticket ID and create a new ticket.
+**Purpose:** Perform a semantic search on the vector store and fetch relevant documents with metadata.
 
 ### 1. Create New Workflow
 - n8n home --> New workflow
+- Name the workflow `P8 - Document Search`
 
 ### 2. Add Trigger Node `When Executed by Another Workflow`
 #### Input data mode: `Define using fields below`
 
-| Name | Type   |
+| Parameter | Type   |
 | ----- | ---------- |
-| `User Name` | String |
-| `Issue Description` | String |
-| `Status` | String |
-| `Prio` | String |
+| query | String` |
 
 **Pin Test Data**:
-- User Name: `Tobias`
-- Issue Description: `My laptop fell down and is broken now`
-- Status: `Open`
-- Prio: `Urgent`
+- query: `Email templates aren’t displaying dynamic fields.`
 
-### 3. Add `Edit Fields` Node
+### 3. Add `Pinecone Vector Store` Node
+
+- **Operation**: `Get Many`
+- **Pinecone Index**: `From List`: `documents`
+- **Prompt**: `{{ $json.query }}`
+- **Limit**: 5
+- **Include Metadata**: `true`
+Options
+- **Pinecone Namespace**: `it`
+
+#### Add Subnode `Embedding`
+- Choose **Embeddings Google Gemini**
+- **Model**: `gemini-embedding-001`
+
+### 4. Add `Edit Fields` Node 
 **Manual Mapping**
  Name | Type | Value |
 | --- | ---- | ----- |
-| ID | String | `{{ $now.ts.toString(36).toUpperCase() }}` |
+| Content | String | `{{ $json.document.pageContent }}` |
+| Source File | String | `{{ $json.document.metadata.file_name }}` |
+| Page | String | `{{ $json.document.metadata['loc.pageNumber'] }}` |
 
+### 5. Add `Aggregate` Node 
+- **Aggregate**: `All Item Data (Into a Single List)`
+- **Put Output in Field**: `data`
+- **Include**: `All Fields`
 
-### 4. Add `Github Create File` Node
+### 6. Add `Edit Fields` Node 
+**Manual Mapping**
+ Name | Type | Value |
+| --- | ---- | ----- |
+| response | String | `{{ $json.toJsonString() }}` |
 
-**Resource**: `File`
-
-**Operation**: `Create`
-
-**Repository Owner**: `your-github-username`
-
-**Repository Name**: `n8n-ai-bootcamp` (forked)
-
-**File Path**
-```
-day 2/project 7/tickets/{{ $json.ID }}.txt
-```
-
-**File Content**
-```
-User Name: {{ $('When Executed by Another Workflow').item.json['User Name'] }}
-
-Submitted: {{ $now }}
-
-Description:
-{{ $('When Executed by Another Workflow').item.json['Issue Description'] }}
-
-Status: {{ $('When Executed by Another Workflow').item.json.Status }}
-Prio: {{ $('When Executed by Another Workflow').item.json.Prio }}
-```
-
-**Commit Message**
-```
-new ticket
-```
-
-### 5. Try it out!
+### 6. Try it out!
 - Run a test execution
+- Try different search queries and test the result
 
-### 6. Publish
-- Everything work?
+### 7. Publish
+- Everything works?
 - Click **Publish** to publish your workflow
 
 ---
 
 ## Part 3: Add the Custom Tool to your AI Agent
 
-Let's give your AI Agent access to the custom tool
+Let's give your AI Agent access to the custom knowledge retrieval tool!
 
-### 1. Open AI Agent Workflow from Part 1
-- n8n home --> Open `Simple AI Agent` Workflow
+### 1. Duplicate or Copy the workflow from P7
+- **Option A**: n8n home --> Duplicate `P7 - Simple AI Agent` Workflow
+- **Option B:** n8n home --> New Workflow --> Import from our [Github repo](https://github.com/tobiaszwingmann/n8n-ai-bootcamp/blob/main/day%202/project%207/n8n/P7%20%E2%80%93%20Simple%20Agent.json)
 
-### 2. Add Custom Tool
-- Click the `+` icon under AI Agent Tool
+### 2. Update Agent Instructions
+- Open the **AI Agent Node**
+- Replace the **ROLE** definition with the following:
+```
+### **Role**
+
+You are an **IT Support Chatbot** for a corporate helpdesk.
+You assist employees with the **Nova CRM**, **Windows** and **Microsoft Office** issues, and manage **support tickets**.
+
+You can:
+
+* Troubleshoot common technical issues.
+* Answer questions about **Nova CRM** using the search tool
+* Decide when to **escalate** to a human IT technician.
+* **Create**, **update**, and **retrieve** tickets using your tools.
+```
+- Leave the rest of the system prompt the same!
+
+### 3. Add the Custom Search Tool
+- Click the `+` icon under the AI Agent Node
 - Select `Call n8n Workflow Tool`
   
 #### Custom Tool Settings
 **Description**
 ```
-Call this tool to create a new ticket. Status can be "Open" or "Closed". Prio can be "Urgent" or "Not Urgent".
+Call this tool to search the user manual of the Nova CRM software.
 ```
 
 **Source**: `Database`
 
-**Workflow**: `From List` --> `Select the ticket workflow you just created`
+**Workflow**: `From List` --> `P8 - Document Search`
 
 #### Workflow Inputs
-- **User Name**: *Defined automatically by the model*
+- **query**: *Defined automatically by the model*
 - **Description**
 ```
-Name of the user. Required to follow up later on.
+Search query for Nova CRM manuals.
 ```
 
-- **Issue Description**: *Defined automatically by the model*
-- **Description**
-```
-Description of the problem. Required.
-```
-
-- **Status**: *Defined automatically by the model*
-- **Description**
-```
-Current status of the ticket. Required. Allowed values: "Open", "Closed"
-```
-
-- **Prio**: *Defined automatically by the model*
-- **Description**
-```
-Time criticality of the ticket. Required. Allowed values: "Urgent", "Not Urgent"
-```
-
-### 3. Try it out!
-- Create a new ticket through your agent
-- Check the ticket in Github
+### 4. Try it out!
+- Ask the chatbot some questions about Nova CRM
+Examples:
+- Can multiple users work in the same account?
+- I did not receive the password reset email
+- What is the URL to log in?

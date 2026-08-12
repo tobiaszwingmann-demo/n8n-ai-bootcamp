@@ -1,0 +1,133 @@
+{
+  "name": "Create Ticket Tool",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "User Name"
+            },
+            {
+              "name": "Issue Description"
+            },
+            {
+              "name": "Status"
+            },
+            {
+              "name": "Prio"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "81ea3341-8912-4d08-8e7f-82dffcb06912",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3250c761-f48a-4ebf-b2b0-44dbfc1053fb",
+              "name": "ID",
+              "value": "={{ $now.ts.toString(36).toUpperCase() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "af51da50-d507-4684-9e9f-2287c813c566",
+      "name": "Set ID"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "tobiaszwingmann-demo",
+          "mode": "list",
+          "cachedResultName": "tobiaszwingmann-demo",
+          "cachedResultUrl": "https://github.com/tobiaszwingmann-demo"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8n-ai-bootcamp",
+          "mode": "list",
+          "cachedResultName": "n8n-ai-bootcamp",
+          "cachedResultUrl": "https://github.com/tobiaszwingmann-demo/n8n-ai-bootcamp"
+        },
+        "filePath": "=day 2/tickets/{{ $json.ID }}.txt",
+        "fileContent": "=User Name: {{ $json['User Name'] }}\n\nSubmitted: {{ $now }}\n\nDescription:\n{{ $json['Issue Description'] }}\n\nStatus: {{ $json.Status }}\nPrio: {{ $json.Prio }}",
+        "commitMessage": "New ticket"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "a3489c93-37c2-4701-93c5-949067acf36b",
+      "name": "Create a file",
+      "webhookId": "0f695a21-3d88-431b-9a72-ee8c102c1c04",
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "3xx3Q11Uh11Yce6s",
+          "name": "GitHub account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Set ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set ID": {
+      "main": [
+        [
+          {
+            "node": "Create a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "aab12ea6-6c06-4821-a0e6-63b8c0b74891",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e9c7dfa4151901f348c9cf3e12a960bd53b5b8124c52360e419ad2260c87e732"
+  },
+  "nodeGroups": [],
+  "id": "xvFnmGP9vt1Y0Jj2",
+  "tags": []
+}

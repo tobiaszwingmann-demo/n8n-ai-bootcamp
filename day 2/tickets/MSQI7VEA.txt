@@ -1,0 +1,9 @@
+User Name: Tobias
+
+Submitted: 2026-08-12T21:50:36.470+02:00
+
+Description:
+Suspected malware/security incident: User Tobias on company-managed device received a "Virus found" alert. User disconnected from network, did NOT restart, and did NOT enter passwords or use email/OneDrive. User will keep device powered on and disconnected. Awaiting human IT technician investigation. User will provide screenshots/alert text if requested. Contact via Teams or phone when available.
+
+Status: Open
+Prio: Urgent

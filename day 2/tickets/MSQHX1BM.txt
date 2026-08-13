@@ -5,9 +5,10 @@ Submitted: 2026-08-12T21:43:35.518+02:00
 Description:
 My laptop fell down and is broken now
 
-Status: Closed
+Status: Reopened
 Prio: Urgent
 
 Activity Log:
 2026-08-12T21:00:00.000+02:00 - Ticket retrieved by chatbot. Classified as hardware damage. Escalated to human IT technician for on-site repair. IT will contact the user to arrange pickup or onsite service.
 2026-08-12T21:46:00.000+02:00 - User reported: "My laptop is working again". Confirmed issue resolved. Ticket closed.
+2026-08-13T09:00:00.000+02:00 - User requested ticket reopened: "It stopped working". Ticket reopened and escalated to human IT technician for on-site repair. Priority set to Urgent.

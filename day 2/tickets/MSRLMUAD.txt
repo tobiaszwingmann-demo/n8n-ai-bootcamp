@@ -1,0 +1,10 @@
+User Name: Tobias
+
+Submitted: 2026-08-13T16:13:59.896+02:00
+
+Description:
+User reports VPN is down and cannot connect to corporate network. User message: "VPNis down. I need urgent support." No additional device or error details provided. User requires immediate access to company resources. Please investigate VPN/service outage, authentication, and network connectivity. Contact user Tobias for any follow-up.
+
+Status: Open
+
+Prio: Urgent

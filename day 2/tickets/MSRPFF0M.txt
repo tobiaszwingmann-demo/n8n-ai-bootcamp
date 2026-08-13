@@ -1,0 +1,10 @@
+User Name: Tobias
+
+Submitted: 2026-08-13T18:00:11.978+02:00
+
+Description:
+User Tobias did not receive Nova CRM password reset email. User reports: tried steps - checked Spam/Promotions/Junk, searched for no-reply@novasoft.io and support@novasoft.io, confirmed used registered email (address not provided in chat), waited 15 minutes, checked company quarantine/whitelist, retried 'Forgot Password' flow. Nothing worked. Request: Verify account status, check email delivery/SMTP logs, whitelist novasoft.io if blocked, resend password reset link, unlock account if locked after failed attempts, and confirm or update user's registered email. Contact user to confirm registered email and provide new reset link.
+
+Status: Open
+
+Prio: Urgent

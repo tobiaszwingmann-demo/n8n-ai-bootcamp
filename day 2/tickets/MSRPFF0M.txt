@@ -3,8 +3,11 @@ User Name: Tobias
 Submitted: 2026-08-13T18:00:11.978+02:00
 
 Description:
-User Tobias did not receive Nova CRM password reset email. User reports: tried steps - checked Spam/Promotions/Junk, searched for no-reply@novasoft.io and support@novasoft.io, confirmed used registered email (address not provided in chat), waited 15 minutes, checked company quarantine/whitelist, retried 'Forgot Password' flow. Nothing worked. Request: Verify account status, check email delivery/SMTP logs, whitelist novasoft.io if blocked, resend password reset link, unlock account if locked after failed attempts, and confirm or update user's registered email. Contact user to confirm registered email and provide new reset link.
+User Tobias did not receive Nova CRM password reset email. User reports: tried steps - checked Spam/Promotions/Junk, searched for no-reply@novasoft.io and support@novasoft.io, confirmed used registered email (address not provided in chat), waited 15 minutes, checked company quarantine/whitelist, retried 'Forgot Password' flow. Nothing worked. Request: Verify account status, check email delivery/SMTP logs, novasoft.io if blocked, resend password reset link, unlock account if locked after failed attempts, and confirm or update user's registered email. Contact user to confirm registered email and provide new reset link.
 
 Status: Open
 
 Prio: Urgent
+
+Activity Log:
+2026-08-13T18:03:00.000+02:00 - Chatbot escalated to human IT technician (Urgent). Requested: verify account status, check SMTP/email delivery and quarantine, confirm/blocklist for novasoft.io, resend password reset link, unlock account if locked, and confirm/update user's registered email. Asked technician to contact user for confirmation.

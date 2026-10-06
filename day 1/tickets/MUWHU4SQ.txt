@@ -1,0 +1,7 @@
+Prio: Not urgent
+
+Name: Tobias
+
+Submitted:2026-10-06T11:45:57.195+02:00
+
+Issue: User requested to speak to a human/support agent (escalation). No technical details were provided—assistant had previously asked about a Windows/Microsoft Office issue but user opted for human contact.

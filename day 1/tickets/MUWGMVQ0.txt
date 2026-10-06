@@ -1,0 +1,7 @@
+Prio: Urgent
+
+Name: Tobias
+
+Submitted:2026-10-06T11:12:19.224+02:00
+
+Issue: PC won't power on

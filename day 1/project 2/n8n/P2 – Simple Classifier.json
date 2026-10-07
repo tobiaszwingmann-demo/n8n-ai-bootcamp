@@ -1,5 +1,5 @@
 {
-  "name": "P2 – Simple Classifier",
+  "name": "Project",
   "nodes": [
     {
       "parameters": {
@@ -8,20 +8,19 @@
         "formFields": {
           "values": [
             {
-              "fieldLabel": "Issue",
+              "fieldLabel": "Issue description",
               "fieldType": "textarea",
               "requiredField": true
             },
             {
-              "fieldLabel": "Your Name",
-              "requiredField": true
+              "fieldLabel": "Your Name"
             }
           ]
         },
         "options": {
           "respondWithOptions": {
             "values": {
-              "formSubmittedText": "IT support will be in touch shortly!  "
+              "formSubmittedText": "IT support will be in touch shortly!"
             }
           }
         }
@@ -29,19 +28,19 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.6,
       "position": [
-        -208,
+        -176,
         0
       ],
-      "id": "0b436f6b-a145-4988-a6ce-66f04d493d7b",
+      "id": "837a11e3-abff-49cb-b63b-c1e51f22e9f5",
       "name": "On form submission",
-      "webhookId": "79d29e5d-6547-4938-b7f9-f43068d7625f"
+      "webhookId": "b0287406-8ef6-4185-a229-3487c0b20fe6"
     },
     {
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "5981e8fe-7bc9-4de2-88e9-27ab498ee700",
+              "id": "6125641c-4dd9-40a9-8f85-a4e5ffb053fe",
               "name": "ID",
               "value": "={{ $json.submittedAt.toDateTime().ts.toString(36).toUpperCase() }}",
               "type": "string"
@@ -54,10 +53,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        16,
+        48,
         0
       ],
-      "id": "76bbf8c3-e0ca-42f7-bfca-f72406b6a938",
+      "id": "1de39b42-3593-4b69-8869-19b953077367",
       "name": "Set ID"
     },
     {
@@ -78,32 +77,58 @@
           "cachedResultName": "n8n-ai-bootcamp",
           "cachedResultUrl": "https://github.com/tobiaszwingmann-demo/n8n-ai-bootcamp"
         },
-        "filePath": "=day 1/tickets/{{ $('Set ID').item.json.ID }}.txt",
-        "fileContent": "=Prio: {{ $json.output.prio }}\n\nName: {{ $('Set ID').item.json['Your Name'] }}\n\nSubmitted:{{ $('Set ID').item.json.submittedAt }}\n\nIssue: {{ $('Set ID').item.json['Issue'] }}",
+        "filePath": "=day 1/tickets/{{ $json.ID }}.txt",
+        "fileContent": "=Prio: {{ $json.output.prio }}\n\nName: {{ $('Set ID').item.json['Your Name'] }}\n\nSubmitted:{{ $('Set ID').item.json.submittedAt }}\n\nIssue: {{ $('Set ID').item.json['Issue description'] }}",
         "commitMessage": "new ticket"
       },
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        592,
+        624,
         0
       ],
-      "id": "fec42268-e1e0-4d30-8a68-de61cd9baa9a",
-      "name": "Save Ticket",
-      "webhookId": "52b3f17a-3c46-4b16-b50b-703f0828f342",
+      "id": "55fba139-3bf3-4252-a940-2a1c2cfaa294",
+      "name": "Create a file",
+      "webhookId": "c4e66cfc-3e6b-4d7e-baba-07245bbee7e4",
       "credentials": {
         "githubOAuth2Api": {
-          "id": "3xx3Q11Uh11Yce6s",
+          "id": "9VKTni7pHcpzlBtt",
           "name": "GitHub account"
         }
       }
     },
     {
       "parameters": {
+        "promptType": "define",
+        "text": "=Issue:\n\n```\n{{ $json['Issue description'] }}\n```",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=### **Role**\n\nYou are a text classification system for an IT support helpdesk.\nYour task is to read an incoming support ticket and classify it as either **\"Urgent\"** or **\"Not urgent\"** based on the content.\n\n### Classification Rules:\n\n* **Urgent** if the ticket describes:\n\n  * Complete system or network outages.\n  * Inability to perform critical work tasks.\n  * Security breaches or data loss.\n  * Hardware failure affecting essential operations.\n  * Issues impacting multiple users or key business functions.\n  * Time-sensitive problems needing immediate attention.\n\n* **Not urgent** if the ticket describes:\n\n  * Minor bugs or usability issues.\n  * Requests for information, training, or feature changes.\n  * Scheduled maintenance or non-critical updates.\n  * Problems with available workarounds.\n  * Single-user issues not blocking essential tasks.\n\n### Output Format:\n\nRespond **only** with one of the following labels:\n\n* `Urgent`\n* `Not urgent`"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        272,
+        0
+      ],
+      "id": "4ba3d596-0198-445f-a02f-b3ff1b3491af",
+      "name": "Basic LLM Chain",
+      "retryOnFail": true,
+      "waitBetweenTries": 500
+    },
+    {
+      "parameters": {
         "model": {
           "__rl": true,
+          "value": "gpt-6-luna",
           "mode": "list",
-          "value": "gpt-5-mini"
+          "cachedResultName": "gpt-6-luna"
         },
         "builtInTools": {},
         "options": {}
@@ -111,15 +136,16 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        192,
-        208
+        280,
+        232
       ],
-      "id": "bd2669b6-44f4-46f8-bf3b-2ee0c5847f0c",
+      "id": "7bd46795-09a8-4468-ad0b-777a36d71ec1",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
-          "id": "ndVxqnMaDx1fp7bs",
-          "name": "n8n free OpenAI API credits"
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
         }
       }
     },
@@ -130,37 +156,25 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        400,
-        208
+        408,
+        232
       ],
-      "id": "2effc7d2-0887-4a0e-9f6a-69f032e4e8d6",
+      "id": "eaeb34b6-eab7-4fcb-b5ef-3d0d2ddfa4ef",
       "name": "Structured Output Parser"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Issue:\n\n```\n\n```",
-        "hasOutputParser": true,
-        "messages": {
-          "messageValues": [
-            {
-              "message": "### **Role**\n\nYou are a text classification system for an IT support helpdesk.\nYour task is to read an incoming support ticket and classify it as either **\"Urgent\"** or **\"Not urgent\"** based on the content.\n\n### Classification Rules:\n\n* **Urgent** if the ticket describes:\n\n  * Complete system or network outages.\n  * Inability to perform critical work tasks.\n  * Security breaches or data loss.\n  * Hardware failure affecting essential operations.\n  * Issues impacting multiple users or key business functions.\n  * Time-sensitive problems needing immediate attention.\n\n* **Not urgent** if the ticket describes:\n\n  * Minor bugs or usability issues.\n  * Requests for information, training, or feature changes.\n  * Scheduled maintenance or non-critical updates.\n  * Problems with available workarounds.\n  * Single-user issues not blocking essential tasks.\n\n### Output Format:\n\nRespond **only** with one of the following labels:\n\n* `Urgent`\n* `Not urgent`"
-            }
-          ]
-        },
-        "batching": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.9,
-      "position": [
-        240,
-        0
-      ],
-      "id": "c95770a7-923c-451c-aebf-e43a2c0a7f60",
-      "name": "Set Priority"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "Issue description": "PC won't power on",
+          "Your Name": "Tobias",
+          "submittedAt": "2026-10-06T11:12:19.224+02:00",
+          "formMode": "test"
+        }
+      }
+    ]
+  },
   "connections": {
     "On form submission": {
       "main": [
@@ -177,7 +191,18 @@
       "main": [
         [
           {
-            "node": "Set Priority",
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Create a file",
             "type": "main",
             "index": 0
           }
@@ -188,7 +213,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "Set Priority",
+            "node": "Basic LLM Chain",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -199,19 +224,8 @@
       "ai_outputParser": [
         [
           {
-            "node": "Set Priority",
+            "node": "Basic LLM Chain",
             "type": "ai_outputParser",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Set Priority": {
-      "main": [
-        [
-          {
-            "node": "Save Ticket",
-            "type": "main",
             "index": 0
           }
         ]
@@ -221,15 +235,14 @@
   "active": false,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": false
+    "binaryMode": "separate"
   },
-  "versionId": "c2819ca7-08b8-4823-8c44-ea5fa8c106ac",
+  "versionId": "31fd258a-06c2-4e70-9027-639ca9fae5c5",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "e9c7dfa4151901f348c9cf3e12a960bd53b5b8124c52360e419ad2260c87e732"
+    "instanceId": "92bd2c69592dcd4469d6a4404cd14bc68bd9635cac5d4ed113812656dace1018"
   },
   "nodeGroups": [],
-  "id": "dpWBRLxtF8wToERP",
+  "id": "Lv5S2spkca3hUezF",
   "tags": []
 }

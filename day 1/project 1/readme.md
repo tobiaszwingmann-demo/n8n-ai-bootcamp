@@ -11,6 +11,9 @@
 2. Edit Fields
 3. Create a file
 
+<img width="683" height="269" alt="image" src="https://github.com/user-attachments/assets/2e33edfc-a599-4eae-98be-e4be59e3b763" />
+
+
 ---
 
 ## Node 1: On form submission
@@ -22,8 +25,8 @@
 | -------------------- | ----------------------------------------------------------------------------------------|
 | **Form Title**       | IT Service Request                                                 					 |
 | **Form Description** | Submit your issue here                                             					 |
-| **Form Fields**      | **Add Form Element** - Issue (textarea, required)<br>- Your Name (required) |
-| **Add Option**       | **Form Response** IT support will be in touch shortly!                            		 |
+| **Form Fields**      | **Add Form Element** <br>- Issue description (textarea, required)<br>- Your Name (text input, required) |
+| **Add Option**       | **Form Response** <br>"IT support will be in touch shortly!"                            		 |
 
 ---
 
@@ -51,11 +54,19 @@
 
 **Purpose:** Save a new ticket file to a GitHub repository.
 
-| Parameter          | Value                                                                                                                                                                                                           |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Authentication** | oAuth2                                                                                                                                                                                                          |
-| **Owner**          | your Github username                                                                                                                                                                  |
-| **Repository**     | your Github repo                                                                                                                                                                  |
-| **File Path**      | `day 1/tickets/{{ $json.ID }}.txt`                                                                                                                                                                          |
-| **File Content**   | Name: `{{ $json['Your Name'] }}`<br>Submitted: `{{ $json.submittedAt }}`<br>Issue: `{{ $json['Issue'] }}` |
-| **Commit Message** | new ticket                                                                                                                                                                                                      |
+| Parameter | Value |
+|---|---|
+| **Authentication** | `oAuth2` |
+| **Owner** | `your GitHub username` |
+| **Repository** | `your GitHub repo` |
+| **File Path** | `day 1/tickets/{{ $('Set ID').item.json.ID }}.txt` |
+| **Commit Message** | `new ticket` |
+
+**File Content**
+```
+Name: {{ $('Set ID').item.json['Your Name'] }}
+
+Submitted:{{ $('Set ID').item.json.submittedAt }}
+
+Issue: {{ $('Set ID').item.json['Issue description'] }}
+```

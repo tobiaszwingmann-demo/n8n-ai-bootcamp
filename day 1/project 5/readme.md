@@ -1,6 +1,6 @@
 # P5 – Simple Support System
 
-**Important:** **Copy your workflow form P3** and **paste it into the workflow with the Q&A Chatbot (P4)**. 
+**Important:** **Copy your workflow form P3** and **paste it into the workflow with the Q&A Chatbot (P4).** 
 
 ---
 
@@ -14,6 +14,7 @@ Incoming chat messages are automatically classified and either:
 * handled directly by an AI chatbot, or
 * escalated into a structured IT support ticket for human follow-up.
 
+<img width="683" height="269" alt="image" src="https://github.com/user-attachments/assets/7600dcfc-fb61-4c91-9db3-8e7355d3db25" />
 
 ---
 
@@ -21,7 +22,7 @@ Incoming chat messages are automatically classified and either:
 
 **Add to the System Prompt**
 
-Add the following part to the system prompt of your Q&A Chatbot (for example after the Response guidelines)
+Add the following part to the system prompt of your Q&A Chatbot (for example after the Response guidelines and examples)
 
 ```
 ### **Escalation Rule:**
@@ -36,12 +37,12 @@ If the request includes **Keywords or topics** such as:
 - *user demands human assistance*
 DO NOT ANSWER the question. 
 
-Instead, respond with "The IT help desk will you support with that. I've created a ticket and they will be in touch shortly"
+Instead, respond with "CODE: ESCALATION"
 ```
 
 ### If Node
 
-`{{ $json.output }}` contains `I've created a ticket`
+`{{ $json.output }}` contains `CODE: ESCALATION`
 
 ### AI Agent
 
@@ -58,7 +59,7 @@ Summarize the user issue and return JSON with the user name and a short issue de
 **Structured Output Parser – Generate from Example**
 ```
 {
-  "Issue": "My laptop broke",
+  "Issue description": "My laptop broke",
   "Name": "Tobias"
 }
 ```
@@ -67,29 +68,21 @@ Summarize the user issue and return JSON with the user name and a short issue de
 
 ### Set ID Node (Update)
 
-- `ID`
-- String
-- `{{ $now.toDateTime().ts.toString(36).toUpperCase() }}`
+| Name | Type | Value |
+|---|---|---|
+| `ID` | String | `{{ $now.toDateTime().ts.toString(36).toUpperCase() }}` |
+| `submittedAt` | String | `{{$now}}` |
+| `Issue description` | String | `{{ $json.output['Issue description'] }}` |
+| `Your Name` | String | `{{ $json.output['Name'] }}` |
 
-- `submittedAt`
-- String
-- `{{$now}}`
-
-- `Issue`
-- String
-- `{{ $json.output.Issue }}`
-
-- `Your Name`
-- String
-- `{{ $json.output['Name'] }}`
-
+- **Include other input fields:** `False`
 
 ### Edit Fields Node (New)
 
 - `output`
 - String
 ```
-{{ $('Q&A Chatbot').item.json.output }}
+IT support will be in touch soon!
 
 Your Ticket ID is {{ $('Set ID').item.json.ID }}
 ```

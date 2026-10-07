@@ -1,6 +1,6 @@
 # P2 – Build a simple AI-powered text classifier
 
-**Note:** Start by copying the workflow from P1 and then modify it as described below.
+**Note:** Continue using the workflow from project 1 and then modify it as described below.
 
 ## Workflow Overview
 
@@ -15,12 +15,15 @@
 3. Basic LLM Chain
    3.1 Chat Model
 4. Create a file
+
+<img width="683" height="269" alt="image" src="https://github.com/user-attachments/assets/558ecf1f-5cc2-4da7-8935-e2979b857578" />
+
                    
 ---
 
 #### Node 3: Basic LLM Chain
 
-**Type:** `LLM Chain (@n8n/n8n-nodes-langchain.chainLlm)`
+**Type:** `LLM Chain`
 
 **Purpose:** Classify the IT issue as *Urgent* or *Not urgent* based on predefined rules.
 
@@ -99,7 +102,7 @@ Respond **only** with one of the following labels:
 | **Authentication** | oAuth2                                                                                                                                                                                                                                           |
 | **Resource**          | File                                                                                                                                                                                                                                          |
 | **Operation**     | Create                                                    |
-| **File Path**      | `day 1/tickets/{{ $('Set ID').item.json.ID }}.txt`                                                                                                                                                                                      |
+| **File Path**      | `day 1/tickets/{{ $('Set ID').item.json.ID }}.txt`  |
 | **Commit Message** | new ticket                                                                                                                                                                                                                                       |
 
 **File Content**
@@ -111,6 +114,6 @@ Name: {{ $('Set ID').item.json['Your Name'] }}
 
 Submitted:{{ $('Set ID').item.json.submittedAt }}
 
-Issue: {{ $('Set ID').item.json['Issue'] }}
+Issue: {{ $('Set ID').item.json['Issue description'] }}
 ```
 

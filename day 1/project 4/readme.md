@@ -4,7 +4,9 @@
 
 Minimal example of a **chat-based AI workflow** in n8n.
 
-It demonstrates how to wire a chat trigger, memory, and an AI model to create a simple conversational assistant. 
+The project demonstrates how to wire a chat trigger, memory, and an AI model to create a simple conversational assistant. 
+
+<img width="683" height="269" alt="image" src="https://github.com/user-attachments/assets/fc2754a7-eea7-4ea9-bf95-74949c7ca8ba" />
 
 ---
 

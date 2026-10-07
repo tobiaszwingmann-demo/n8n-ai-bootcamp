@@ -1,0 +1,7 @@
+Priority: Urgent
+
+Name: Tobias
+
+Submitted:2026-10-07T19:48:08.104+02:00
+
+Issue: Outlook on PC is very slow. User reports a red banner in Outlook saying malware detected (user provided code: ESCALATION). Requires urgent escalation/troubleshooting.

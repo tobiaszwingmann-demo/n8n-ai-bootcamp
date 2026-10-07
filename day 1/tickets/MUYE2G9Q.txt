@@ -1,0 +1,7 @@
+Priority: Urgent
+
+Name: Unknown
+
+Submitted:2026-10-07T19:35:59.199+02:00
+
+Issue: User reports that their PC is infected with a virus.

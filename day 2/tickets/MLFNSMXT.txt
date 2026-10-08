@@ -3,10 +3,11 @@ User Name: Tobias
 Submitted: 2026-02-09T22:03:19.074+01:00
 
 Description:
-User Tobias reports that their laptop fell down. Potential hardware damage needs to be assessed.
+User Tobias reports that their laptop fell down. Potential hardware damage; needed assessment.
 
-Status: Open
+Status: Closed
 Prio: Urgent
 
 Activity Log:
-2026-10-08T09:30:00.000+00:00 - Ticket reviewed by IT chatbot. Issue classified as hardware/repair. Escalated to human IT technician (Urgent).
+2026-10-08T09:30:00.000+00:00 - Ticket reviewed by IT chatbot; classified as hardware/repair and escalated to human IT (Urgent).
+2026-10-08T09:45:00.000+00:00 - User reported issue resolved. Ticket closed.

@@ -1,0 +1,9 @@
+User Name: Tobias
+
+Submitted: 2026-10-08T10:06:40.588+02:00
+
+Description:
+User Tobias reports: "my pc has a virus". Suspected malware infection. User requests immediate assistance for malware removal, full system scan, and potential reimage. Advise isolating device from network; do not use until technician review. No further diagnostics provided by user.
+
+Status: Open
+Prio: Urgent

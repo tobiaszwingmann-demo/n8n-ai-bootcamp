@@ -1,0 +1,9 @@
+User Name: Tobias
+
+Submitted: 2026-10-08T17:17:00.727+02:00
+
+Description:
+User Tobias reports laptop/PC fell and screen is broken. Device likely requires hardware repair or replacement. User cannot use device due to broken display. Request onsite or depot repair and device replacement if necessary.
+
+Status: Open
+Prio: Urgent

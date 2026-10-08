@@ -7,3 +7,6 @@ User Tobias reports that their laptop fell down. Potential hardware damage needs
 
 Status: Open
 Prio: Urgent
+
+Activity Log:
+2026-10-08T09:30:00.000+00:00 - Ticket reviewed by IT chatbot. Issue classified as hardware/repair. Escalated to human IT technician (Urgent).
